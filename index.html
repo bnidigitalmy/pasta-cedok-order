@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>Pasta Cedok — Order Online</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-badge">PC</div>
+      <div>
+        <h1>Pasta Cedok</h1>
+        <p>Alor Setar · Order awal, bayar di kaunter</p>
+      </div>
+    </div>
+  </header>
+
+  <main id="menu-view">
+    <nav id="category-chips" class="chips"></nav>
+    <section id="product-grid" class="grid"></section>
+  </main>
+
+  <div id="cart-bar" class="cart-bar hidden">
+    <button id="cart-bar-btn" class="cart-bar-btn">
+      <span class="cart-bar-icon">🛍️</span>
+      <span id="cart-bar-label">0 item · Teruskan Pesanan</span>
+      <span id="cart-bar-total">RM0.00</span>
+    </button>
+  </div>
+
+  <div id="checkout-overlay" class="overlay hidden">
+    <div class="sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h2>Pesanan Anda</h2>
+        <button id="checkout-close" class="icon-btn" aria-label="Tutup">✕</button>
+      </div>
+      <div id="checkout-lines" class="checkout-lines"></div>
+      <form id="checkout-form" class="checkout-form">
+        <label>Nama
+          <input type="text" id="cust-name" required autocomplete="name" />
+        </label>
+        <label>No. Telefon
+          <input type="tel" id="cust-phone" required autocomplete="tel" />
+        </label>
+        <label>Catatan (pilihan)
+          <input type="text" id="cust-notes" placeholder="cth: kurang pedas" />
+        </label>
+        <div class="totals-row">
+          <span>Jumlah</span>
+          <strong id="checkout-total">RM0.00</strong>
+        </div>
+        <p class="hint">Bayar di kaunter bila anda tiba untuk ambil pesanan.</p>
+        <button type="submit" id="checkout-submit" class="primary-btn">Hantar Pesanan</button>
+        <p id="checkout-error" class="error hidden"></p>
+      </form>
+    </div>
+  </div>
+
+  <div id="confirm-overlay" class="overlay hidden">
+    <div class="confirm-card">
+      <div class="confirm-check">✓</div>
+      <h2>Pesanan Diterima!</h2>
+      <p id="confirm-order-no" class="confirm-order-no"></p>
+      <p id="confirm-total" class="confirm-total"></p>
+      <p class="hint">Sila bayar di kaunter apabila anda tiba untuk ambil pesanan.</p>
+      <button id="confirm-new-order" class="primary-btn">Pesanan Baru</button>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
