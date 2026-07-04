@@ -139,6 +139,19 @@ main { padding: 14px 14px 120px; max-width: 720px; margin: 0 auto; }
   border: 1px solid var(--border); border-radius: 12px; background: #fff;
   font-family: inherit;
 }
+.pickup-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 5px 0 14px; }
+.pickup-chip {
+  padding: 9px 14px; border-radius: 20px; border: 1px solid var(--border);
+  background: #fff; font-size: 12.5px; font-weight: 700; color: var(--ink);
+  cursor: pointer; font-family: inherit;
+}
+.pickup-chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.pickup-custom { padding: 0; border: 1px solid var(--border); display: flex; align-items: center; }
+.pickup-custom input[type="time"] {
+  border: none; margin: 0; padding: 8px 10px; font-size: 12.5px; border-radius: 20px;
+  background: transparent; width: auto;
+}
+
 .totals-row {
   display: flex; justify-content: space-between; align-items: baseline;
   padding-top: 11px; border-top: 1px solid #dbd7ce; margin: 6px 0 4px;
@@ -168,3 +181,7 @@ main { padding: 14px 14px 120px; max-width: 720px; margin: 0 auto; }
 .confirm-card h2 { margin: 0 0 8px; font-size: 22px; font-weight: 800; }
 .confirm-order-no { font-size: 32px; font-weight: 800; color: var(--accent); margin: 0 0 12px; }
 .confirm-total { font-size: 18px; font-weight: 700; margin: 0 0 8px; }
+.confirm-pickup {
+  display: inline-block; font-size: 13px; font-weight: 700; color: var(--accent);
+  background: rgba(216,65,46,0.1); padding: 6px 14px; border-radius: 20px; margin: 0 0 10px;
+}

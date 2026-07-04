@@ -48,6 +48,15 @@
         <label>Catatan (pilihan)
           <input type="text" id="cust-notes" placeholder="cth: kurang pedas" />
         </label>
+        <label>Waktu Nak Ambil</label>
+        <div id="pickup-chips" class="pickup-chips">
+          <button type="button" class="pickup-chip active" data-pickup="asap">Sekarang</button>
+          <button type="button" class="pickup-chip" data-pickup="30m">30 Minit</button>
+          <button type="button" class="pickup-chip" data-pickup="1h">1 Jam</button>
+          <span class="pickup-chip pickup-custom">
+            <input type="time" id="pickup-custom-time" />
+          </span>
+        </div>
         <div class="totals-row">
           <span>Jumlah</span>
           <strong id="checkout-total">RM0.00</strong>
@@ -65,6 +74,7 @@
       <h2>Pesanan Diterima!</h2>
       <p id="confirm-order-no" class="confirm-order-no"></p>
       <p id="confirm-total" class="confirm-total"></p>
+      <p id="confirm-pickup" class="confirm-pickup"></p>
       <p class="hint">Sila bayar di kaunter apabila anda tiba untuk ambil pesanan.</p>
       <button id="confirm-new-order" class="primary-btn">Pesanan Baru</button>
     </div>

@@ -11,6 +11,7 @@ const rm = (n) => `RM${Number(n).toFixed(2)}`;
 let categories = [];
 let products = [];
 let activeCategory = "all";
+let pickupOption = "asap"; // asap | 30m | 1h | custom
 /** @type {Map<string, {id:string,name:string,price:number,qty:number}>} */
 const cart = new Map();
 
@@ -31,9 +32,12 @@ const el = {
   custName: document.getElementById("cust-name"),
   custPhone: document.getElementById("cust-phone"),
   custNotes: document.getElementById("cust-notes"),
+  pickupChips: document.getElementById("pickup-chips"),
+  pickupCustomTime: document.getElementById("pickup-custom-time"),
   confirmOverlay: document.getElementById("confirm-overlay"),
   confirmOrderNo: document.getElementById("confirm-order-no"),
   confirmTotal: document.getElementById("confirm-total"),
+  confirmPickup: document.getElementById("confirm-pickup"),
   confirmNewOrder: document.getElementById("confirm-new-order"),
 };
 
@@ -174,6 +178,42 @@ function renderCheckoutSheet() {
   el.checkoutError.classList.add("hidden");
 }
 
+for (const btn of el.pickupChips.querySelectorAll("button[data-pickup]")) {
+  btn.onclick = () => {
+    pickupOption = btn.dataset.pickup;
+    for (const b of el.pickupChips.querySelectorAll("button[data-pickup]")) {
+      b.classList.toggle("active", b === btn);
+    }
+  };
+}
+el.pickupCustomTime.onchange = () => {
+  pickupOption = "custom";
+  for (const b of el.pickupChips.querySelectorAll("button[data-pickup]")) {
+    b.classList.remove("active");
+  }
+};
+
+function resolvePickupTime() {
+  const now = new Date();
+  if (pickupOption === "30m") return new Date(now.getTime() + 30 * 60000).toISOString();
+  if (pickupOption === "1h") return new Date(now.getTime() + 60 * 60000).toISOString();
+  if (pickupOption === "custom" && el.pickupCustomTime.value) {
+    const [h, m] = el.pickupCustomTime.value.split(":").map(Number);
+    const picked = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m);
+    if (picked < now) picked.setDate(picked.getDate() + 1);
+    return picked.toISOString();
+  }
+  return null; // ASAP
+}
+
+function resetPickupSelector() {
+  pickupOption = "asap";
+  el.pickupCustomTime.value = "";
+  for (const b of el.pickupChips.querySelectorAll("button[data-pickup]")) {
+    b.classList.toggle("active", b.dataset.pickup === "asap");
+  }
+}
+
 el.checkoutForm.onsubmit = async (e) => {
   e.preventDefault();
   el.checkoutError.classList.add("hidden");
@@ -185,22 +225,28 @@ el.checkoutForm.onsubmit = async (e) => {
       product_id: l.id,
       qty: l.qty,
     }));
+    const pickupTime = resolvePickupTime();
     const { data, error } = await supabase.rpc("place_online_order", {
       p_items: items,
       p_customer_name: el.custName.value.trim(),
       p_customer_phone: el.custPhone.value.trim(),
       p_notes: el.custNotes.value.trim() || null,
+      p_pickup_time: pickupTime,
     });
     if (error) throw error;
 
     el.checkoutOverlay.classList.add("hidden");
     el.confirmOrderNo.textContent = data.order_no;
     el.confirmTotal.textContent = rm(data.total);
+    el.confirmPickup.textContent = pickupTime
+      ? `Waktu ambil: ${new Date(pickupTime).toLocaleTimeString("ms-MY", { hour: "numeric", minute: "2-digit" })}`
+      : "Waktu ambil: Sekarang";
     el.confirmOverlay.classList.remove("hidden");
     cart.clear();
     renderCartBar();
     renderGrid();
     el.checkoutForm.reset();
+    resetPickupSelector();
   } catch (err) {
     console.error(err);
     el.checkoutError.textContent =
